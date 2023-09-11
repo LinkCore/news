@@ -81,63 +81,71 @@ class _NewsListScreenState extends State<NewsListScreen> {
                 ],
               ),
             ),
-            body: ListView(controller: scrollController, children: [
-              ...List.generate(
-                  state.listNews.length,
-                  (index) => InkWell(
-                        onTap: () => tapOnNews(
-                            state.listNews[index], state.listNews[index].url),
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 15)
-                              .copyWith(top: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.listNews[index].title,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: state.listNews[index].isRead
-                                      ? Colors.black87.withOpacity(0.3)
-                                      : Colors.black87,
-                                ),
+            body: ListView(
+                physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics()),
+                controller: scrollController,
+                children: [
+                  ...List.generate(
+                      state.listNews.length,
+                      (index) => InkWell(
+                            onTap: () => tapOnNews(state.listNews[index],
+                                state.listNews[index].url),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 15)
+                                  .copyWith(top: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.listNews[index].title,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: state.listNews[index].isRead
+                                          ? Colors.black87.withOpacity(0.3)
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(35),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            state.listNews[index].urlToImage,
+                                      )),
+                                  const SizedBox(height: 5),
+                                  Publication(
+                                    author: state.listNews[index].author,
+                                    publishedAt:
+                                        state.listNews[index].publishedAt,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    state.listNews[index].content,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  ReadingTime(
+                                    title: state.listNews[index].title,
+                                    content: state.listNews[index].content,
+                                    description:
+                                        state.listNews[index].description,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 20),
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(35),
-                                  child: CachedNetworkImage(
-                                    imageUrl: state.listNews[index].urlToImage,
-                                  )),
-                              const SizedBox(height: 5),
-                              Publication(
-                                author: state.listNews[index].author,
-                                publishedAt: state.listNews[index].publishedAt,
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                state.listNews[index].content,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w500, fontSize: 13),
-                              ),
-                              const SizedBox(height: 5),
-                              ReadingTime(
-                                title: state.listNews[index].title,
-                                content: state.listNews[index].content,
-                                description: state.listNews[index].description,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )),
-              if (state.isLoading)
-                const Padding(
-                    padding: EdgeInsets.only(top: 300),
-                    child: Center(
-                        child: CircularProgressIndicator(strokeAlign: 40))),
-            ]),
+                            ),
+                          )),
+                  if (state.isLoading)
+                    const Padding(
+                        padding: EdgeInsets.only(top: 300),
+                        child: Center(
+                            child: CircularProgressIndicator(strokeAlign: 40))),
+                ]),
           );
         } else if (state is NewsErrorState) {
           return Center(child: Text(state.errorCode));
