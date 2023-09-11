@@ -1,5 +1,4 @@
 abstract class ApiConstants {
-
   static const String endpoint =
       'https://newsapi.org/v2/everything?sources=techcrunch&pageSize=10';
   static const String articlesKey = 'articles';

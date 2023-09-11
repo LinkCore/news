@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news/data/repository/news_repository.dart';
 
 import '../../data/model/news_model.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'news_state.dart';
 
@@ -13,11 +13,16 @@ class NewsCubit extends Cubit<NewsState> {
 
   Future<void> loadNews() async {
     emit(NewsHasDataState(listNews: _repository.news, isLoading: true));
-    try{
+    try {
       List<NewsModel> listNews = await _repository.loadNews();
       emit(NewsHasDataState(listNews: listNews));
     } on Exception catch (e) {
       emit(NewsErrorState(errorCode: e.toString()));
     }
+  }
+
+  Future<void> setRead(String id) async {
+    await _repository.setReadById(id);
+    emit(NewsHasDataState(listNews: List.from(_repository.news)));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/api_constants.dart';
 import '../model/news_model.dart';
@@ -44,16 +45,25 @@ class NewsRepository {
           .map((e) => NewsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+    for (var news in _news) {
+      if (await fetchReadById(news.url)) {
+        news.isRead = true;
+      }
+    }
     return _news;
   }
-}
 
-extension MapExtension on Map<String, dynamic> {
-  T valueFrom<T>(String key, T placeholder) {
-    if (keys.contains(key) && this[key] is T) {
-      return this[key] as T;
-    } else {
-      return placeholder;
-    }
+  Future<bool> fetchReadById(String id) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(id) ?? false;
+  }
+
+  Future<void> setReadById(String id) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    await sharedPreferences.setBool(id, true);
+    final int index = _news.indexWhere((element) => element.url == id);
+    _news[index].isRead = true;
   }
 }

@@ -1,4 +1,4 @@
-import 'package:news/data/repository/news_repository.dart';
+import 'package:news/common/map_extension.dart';
 
 import '../../common/news_model_sourse_keys.dart';
 

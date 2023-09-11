@@ -10,10 +10,12 @@ class NewsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          colorScheme: const ColorScheme.light(primary: Color(0xFF191919))),
       debugShowCheckedModeBanner: false,
       home: BlocProvider<NewsCubit>(
-          create: (_) => NewsCubit()..loadNews(),
-          child: const NewsListScreen(),
+        create: (_) => NewsCubit()..loadNews(),
+        child: const NewsListScreen(),
       ),
     );
   }

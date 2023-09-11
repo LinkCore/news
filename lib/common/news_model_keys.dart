@@ -1,5 +1,4 @@
 abstract class NewsModelKeys {
-
   static const String authorKey = 'author';
   static const String titleKey = 'title';
   static const String descriptionKey = 'description';
