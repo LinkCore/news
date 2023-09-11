@@ -13,6 +13,7 @@ class NewsModel {
   final String urlToImage;
   final DateTime publishedAt;
   bool? _isRead;
+  int likes = 0;
 
   NewsModel({
     required this.author,

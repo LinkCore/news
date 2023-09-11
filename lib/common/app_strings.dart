@@ -24,4 +24,6 @@ abstract class AppStrings {
 
   ///error
   static const String unknownState = 'unknown state';
+
+  static const String countOfLikes = 'count of likes: ';
 }

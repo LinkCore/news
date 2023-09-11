@@ -60,10 +60,17 @@ class NewsRepository {
   }
 
   Future<void> setReadById(String id) async {
-    final SharedPreferences sharedPreferences =
-        await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setBool(id, true);
     final int index = _news.indexWhere((element) => element.url == id);
     _news[index].isRead = true;
+  }
+
+  Future<int> addLike(String id) async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final int index = _news.indexWhere((element) => element.url == id);
+    _news[index].likes++;
+    await sharedPreferences.setInt('$id.likes', _news[index].likes);
+    return _news[index].likes;
   }
 }
