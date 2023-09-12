@@ -32,8 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "openOnWeb":
             MessageLookupByLibrary.simpleMessage("Открыть полную новость"),
         "pageNotificationsCount": m0,
-        "someReadingTime": MessageLookupByLibrary.simpleMessage(
-            "Время на чтение полной новости:"),
+        "someReadingTime":
+            MessageLookupByLibrary.simpleMessage("Время на чтение:"),
         "todayAt": MessageLookupByLibrary.simpleMessage("сегодня в "),
         "unknownItem": MessageLookupByLibrary.simpleMessage("неизвестно"),
         "yesterdayIn": MessageLookupByLibrary.simpleMessage("вчера в ")
