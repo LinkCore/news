@@ -1,0 +1,11 @@
+{
+  "hello": "Hello Egor, today ",
+  "news": "News: ",
+  "someReadingTime": "Some reading time:",
+  "pageNotificationsCount": "{howMany, plural, one{1 minute} two{2 minutes} other{more than two minutes}}",
+  "todayAt": "today at ",
+  "yesterdayIn": "yesterday in ",
+  "openOnWeb": "Open the entire article (on the website)",
+  "unknownItem": "unknown",
+  "countOfLikes": "Likes: "
+}

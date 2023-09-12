@@ -1,15 +1,16 @@
 part of 'news_cubit.dart';
 
 @immutable
-abstract class NewsState {}
+sealed class NewsState {}
 
 class NewsInitial extends NewsState {}
 
 class NewsHasDataState extends NewsState {
-  final List<NewsModel> listNews;
-  final bool isLoading;
+  final List<ArticleModel> listNews;
 
-  NewsHasDataState({required this.listNews, this.isLoading = false});
+  NewsHasDataState({
+    required this.listNews,
+  });
 }
 
 class NewsErrorState extends NewsState {

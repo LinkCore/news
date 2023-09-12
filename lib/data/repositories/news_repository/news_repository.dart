@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:news/data/model/news/article_model.dart';
+import 'package:news/data/repositories/news_repository/news_repository_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../common/api_constants.dart';
-import '../model/news_model.dart';
 
 typedef _C = ApiConstants;
 
@@ -19,11 +18,15 @@ class NewsRepository {
 
   int _page = 1;
 
-  final List<NewsModel> _news = [];
+  final List<ArticleModel> _news = [];
 
-  List<NewsModel> get news => _news;
+  List<ArticleModel> get news => _news;
 
-  Future<List<NewsModel>> loadNews() async {
+  Future<List<ArticleModel>> loadNews(bool refresh) async {
+    if (refresh) {
+      _news.clear();
+      _page = 1;
+    }
     final rawResponse = await http.get(
       Uri.parse(
         '${_C.endpoint}&page=$_page&apiKey=${_C.apiKey}',
@@ -42,32 +45,42 @@ class NewsRepository {
     _page++;
     _news.addAll(
       (rawList[_C.articlesKey] as List)
-          .map((e) => NewsModel.fromJson(e as Map<String, dynamic>))
+          .map((e) => ArticleModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
     for (var news in _news) {
-      if (await fetchReadById(news.url)) {
+      if (await _fetchReadById(news.url)) {
         news.isRead = true;
       }
+      int likesCount = await _fetchLikeById(news.url);
+      news.likes = likesCount;
     }
     return _news;
   }
 
-  Future<bool> fetchReadById(String id) async {
+  Future<bool> _fetchReadById(String id) async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
     return sharedPreferences.getBool(id) ?? false;
   }
 
   Future<void> setReadById(String id) async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     await sharedPreferences.setBool(id, true);
     final int index = _news.indexWhere((element) => element.url == id);
     _news[index].isRead = true;
   }
 
-  Future<int> addLike(String id) async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  Future<int> _fetchLikeById(String id) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    return sharedPreferences.getInt('$id.likes') ?? 0;
+  }
+
+  Future<int> setLikeById(String id) async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
     final int index = _news.indexWhere((element) => element.url == id);
     _news[index].likes++;
     await sharedPreferences.setInt('$id.likes', _news[index].likes);

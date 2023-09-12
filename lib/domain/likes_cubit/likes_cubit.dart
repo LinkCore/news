@@ -1,16 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../data/repository/news_repository.dart';
+import 'package:news/data/repositories/news_repository/news_repository.dart';
 
 part 'likes_state.dart';
 
 class LikesCubit extends Cubit<LikeState> {
-  LikesCubit() : super(LikeState(like: 0));
+  LikesCubit(this.initialLikesCount)
+      : super(LikeState(like: initialLikesCount));
+
+  final int initialLikesCount;
 
   final NewsRepository _repository = NewsRepository();
 
-
   Future<void> addLike(String id) async {
-    emit(LikeState(like: await _repository.addLike(id)));
+    emit(LikeState(like: await _repository.setLikeById(id)));
   }
 }

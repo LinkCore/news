@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'news_app.dart';
+import 'app.dart';
 
-void main() => runApp(const NewsApp());
+void main() => runApp(const App());
