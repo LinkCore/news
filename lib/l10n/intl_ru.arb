@@ -1,7 +1,7 @@
 {
   "hello": "Привет, Егор! Сегодня ",
   "news": "Новости: ",
-  "someReadingTime": "Время на чтение полной новости:",
+  "someReadingTime": "Время на чтение:",
   "pageNotificationsCount": "{howMany, plural, one{одна минута} two{две минуты} other{более двух минут}}",
   "todayAt": "сегодня в ",
   "yesterdayIn": "вчера в ",
